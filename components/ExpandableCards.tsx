@@ -10,25 +10,25 @@ const cards = [
     id: 1,
     title: "How Fever Scaled Quality\nand Training in a Fast-\nGrowth Environment",
     logo: "fever",
-    image: "https://picsum.photos/seed/fever1/800/600",
+    image: "https://picsum.photos/id/1018/800/600",
   },
   {
     id: 2,
     title: "Ryanair's approach to\ncustomer service training",
     logo: "RYANAIR",
-    image: "https://picsum.photos/seed/ryanair1/800/600",
+    image: "https://picsum.photos/id/1015/800/600",
   },
   {
     id: 3,
     title: "Scaling support\nwith Three",
     logo: "Three",
-    image: "https://picsum.photos/seed/three1/800/600",
+    image: "https://picsum.photos/id/1036/800/600",
   },
   {
     id: 4,
     title: "Crypto.com's global\ntraining program",
     logo: "crypto.com",
-    image: "https://picsum.photos/seed/crypto1/800/600",
+    image: "https://picsum.photos/id/1043/800/600",
   }
 ];
 
@@ -43,7 +43,7 @@ export default function ExpandableCards() {
         return (
           <motion.div
             key={card.id}
-            className="relative rounded-[2rem] overflow-hidden cursor-pointer flex flex-col justify-between p-8 group"
+            className="relative z-0 rounded-[2rem] overflow-hidden cursor-pointer flex flex-col justify-between p-8 group"
             initial={false}
             animate={{
               flex: isExpanded ? 3.5 : 1,
@@ -55,14 +55,23 @@ export default function ExpandableCards() {
               src={card.image}
               alt={card.title}
               fill
-              className="object-cover -z-10"
+              className="object-cover"
               referrerPolicy="no-referrer"
             />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 -z-10" />
+            {/* Progressive blur and gradient overlay */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[2rem]">
+              <div 
+                className="absolute inset-0 backdrop-blur-[12px]"
+                style={{
+                  maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 25%, rgba(0,0,0,0) 60%)',
+                  WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 25%, rgba(0,0,0,0) 60%)'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            </div>
 
             {/* Top section: Read more */}
-            <div className="flex justify-end h-8">
+            <div className="flex justify-end h-8 relative z-10">
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
@@ -79,7 +88,7 @@ export default function ExpandableCards() {
             </div>
 
             {/* Bottom section: Title and Logo */}
-            <div className="flex items-end w-full mt-auto h-32">
+            <div className="flex items-end w-full mt-auto h-32 relative z-10">
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
