@@ -35,6 +35,8 @@ const cards = [
 export default function ExpandableCards() {
   const [expandedIndex, setExpandedIndex] = useState(0);
 
+  const springTransition = { type: 'spring' as const, stiffness: 120, damping: 20, mass: 0.9 };
+
   return (
     <div className="flex gap-4 w-full max-w-5xl mx-auto h-[500px]">
       {cards.map((card, index) => {
@@ -48,7 +50,7 @@ export default function ExpandableCards() {
             animate={{
               flex: isExpanded ? 3.5 : 1,
             }}
-            transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+            transition={springTransition}
             onMouseEnter={() => setExpandedIndex(index)}
           >
             <Image
@@ -75,10 +77,10 @@ export default function ExpandableCards() {
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
-                    initial={{ opacity: 0, x: 10, filter: 'blur(4px)' }}
+                    initial={{ opacity: 0, x: 15, filter: 'blur(8px)' }}
                     animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, x: 10, filter: 'blur(4px)', transition: { duration: 0.2, delay: 0 } }}
-                    transition={{ duration: 0.4, delay: 0.15 }}
+                    exit={{ opacity: 0, x: 10, filter: 'blur(4px)', transition: { duration: 0.2, ease: "easeIn" } }}
+                    transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
                     className="flex items-center gap-2 text-white text-sm font-medium"
                   >
                     Read more <ArrowRight className="w-4 h-4" />
@@ -92,10 +94,10 @@ export default function ExpandableCards() {
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
+                    initial={{ opacity: 0, y: 15, filter: 'blur(8px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, y: 10, filter: 'blur(4px)', transition: { duration: 0.2, delay: 0 } }}
-                    transition={{ duration: 0.4, delay: 0.15 }}
+                    exit={{ opacity: 0, y: 10, filter: 'blur(4px)', transition: { duration: 0.2, ease: "easeIn" } }}
+                    transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
                     className="absolute left-0 bottom-0"
                   >
                     <h3 className="text-white text-2xl font-semibold leading-snug whitespace-pre-line w-[280px]">
@@ -108,6 +110,7 @@ export default function ExpandableCards() {
               <div className={`w-full flex ${isExpanded ? 'justify-end' : 'justify-center'}`}>
                 <motion.div
                   layout
+                  transition={springTransition}
                   className="text-white font-bold text-xl whitespace-nowrap"
                 >
                   {card.logo}
