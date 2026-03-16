@@ -75,10 +75,10 @@ export default function ExpandableCards() {
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 10 }}
-                    transition={{ duration: 0.2, delay: 0.1 }}
+                    initial={{ opacity: 0, x: 10, filter: 'blur(4px)' }}
+                    animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, x: 10, filter: 'blur(4px)', transition: { duration: 0.2, delay: 0 } }}
+                    transition={{ duration: 0.4, delay: 0.15 }}
                     className="flex items-center gap-2 text-white text-sm font-medium"
                   >
                     Read more <ArrowRight className="w-4 h-4" />
@@ -92,25 +92,27 @@ export default function ExpandableCards() {
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: 'auto' }}
-                    exit={{ opacity: 0, width: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden flex-1"
+                    initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: 10, filter: 'blur(4px)', transition: { duration: 0.2, delay: 0 } }}
+                    transition={{ duration: 0.4, delay: 0.15 }}
+                    className="absolute left-0 bottom-0"
                   >
-                    <h3 className="text-white text-2xl font-semibold leading-snug whitespace-pre-line min-w-[250px]">
+                    <h3 className="text-white text-2xl font-semibold leading-snug whitespace-pre-line w-[280px]">
                       {card.title}
                     </h3>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              <motion.div
-                layout
-                className={`text-white font-bold text-xl whitespace-nowrap ${isExpanded ? '' : 'mx-auto'}`}
-              >
-                {card.logo}
-              </motion.div>
+              <div className={`w-full flex ${isExpanded ? 'justify-end' : 'justify-center'}`}>
+                <motion.div
+                  layout
+                  className="text-white font-bold text-xl whitespace-nowrap"
+                >
+                  {card.logo}
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         );
