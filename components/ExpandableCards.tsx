@@ -1,0 +1,111 @@
+'use client';
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+
+const cards = [
+  {
+    id: 1,
+    title: "How Fever Scaled Quality\nand Training in a Fast-\nGrowth Environment",
+    logo: "fever",
+    image: "https://picsum.photos/seed/fever1/800/600",
+  },
+  {
+    id: 2,
+    title: "Ryanair's approach to\ncustomer service training",
+    logo: "RYANAIR",
+    image: "https://picsum.photos/seed/ryanair1/800/600",
+  },
+  {
+    id: 3,
+    title: "Scaling support\nwith Three",
+    logo: "Three",
+    image: "https://picsum.photos/seed/three1/800/600",
+  },
+  {
+    id: 4,
+    title: "Crypto.com's global\ntraining program",
+    logo: "crypto.com",
+    image: "https://picsum.photos/seed/crypto1/800/600",
+  }
+];
+
+export default function ExpandableCards() {
+  const [expandedIndex, setExpandedIndex] = useState(0);
+
+  return (
+    <div className="flex gap-4 w-full max-w-5xl mx-auto h-[500px]">
+      {cards.map((card, index) => {
+        const isExpanded = index === expandedIndex;
+
+        return (
+          <motion.div
+            key={card.id}
+            className="relative rounded-[2rem] overflow-hidden cursor-pointer flex flex-col justify-between p-8 group"
+            initial={false}
+            animate={{
+              flex: isExpanded ? 3.5 : 1,
+            }}
+            transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+            onMouseEnter={() => setExpandedIndex(index)}
+          >
+            <Image
+              src={card.image}
+              alt={card.title}
+              fill
+              className="object-cover -z-10"
+              referrerPolicy="no-referrer"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 -z-10" />
+
+            {/* Top section: Read more */}
+            <div className="flex justify-end h-8">
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    transition={{ duration: 0.2, delay: 0.1 }}
+                    className="flex items-center gap-2 text-white text-sm font-medium"
+                  >
+                    Read more <ArrowRight className="w-4 h-4" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Bottom section: Title and Logo */}
+            <div className="flex items-end w-full mt-auto h-32">
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: 'auto' }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden flex-1"
+                  >
+                    <h3 className="text-white text-2xl font-semibold leading-snug whitespace-pre-line min-w-[250px]">
+                      {card.title}
+                    </h3>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <motion.div
+                layout
+                className={`text-white font-bold text-xl whitespace-nowrap ${isExpanded ? '' : 'mx-auto'}`}
+              >
+                {card.logo}
+              </motion.div>
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
